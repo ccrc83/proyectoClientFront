@@ -9,7 +9,7 @@ export interface Clients {
 }
 
 export interface ClientDTO {
-  sharedKey: string;
+  
   businessId: string;
   email: string;
   phone: string;

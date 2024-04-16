@@ -1,29 +1,36 @@
 <mat-toolbar color="primary" style="display: flex; justify-content: space-between;">
-  <span>Create New Client</span>
+  <span>{{ isEditing ? 'Edit Client' : 'Create New Client' }}</span>
   <button mat-icon-button type="button" (click)="closeDialog()">
     <mat-icon>close</mat-icon>
   </button>
 </mat-toolbar>
 
 <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
-  <mat-form-field>
+  <mat-form-field *ngIf="isEditing; else sharedKeyInput">
     <mat-label>Shared Key</mat-label>
-    <input matInput formControlName="sharedKey" />
+    <input matInput [value]="clientForm.get('sharedKey')?.value" disabled>
   </mat-form-field>
+
+  <ng-template #sharedKeyInput>
+    <mat-form-field>
+      <mat-label>Shared Key</mat-label>
+      <input matInput formControlName="sharedKey">
+    </mat-form-field>
+  </ng-template>
 
   <mat-form-field>
     <mat-label>Business ID</mat-label>
-    <input matInput formControlName="businessId" />
+    <input matInput formControlName="businessId">
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>E-mail</mat-label>
-    <input matInput formControlName="email" />
+    <input matInput formControlName="email">
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Phone</mat-label>
-    <input matInput formControlName="phone" />
+    <input matInput formControlName="phone">
   </mat-form-field>
 
   <!-- Agregar otros campos de formulario según sea necesario -->

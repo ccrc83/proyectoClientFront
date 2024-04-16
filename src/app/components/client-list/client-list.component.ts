@@ -36,11 +36,13 @@ export class ClientListComponent {
   subscription$: Subscription[] = [];
 
   clientServices=inject(ClientsService);
+  isEditing: boolean = false;
 
 
   constructor(private cdRef: ChangeDetectorRef, public dialog: MatDialog ) {}
 
   ngOnInit(): void {
+   
     this.getAllClients();
   }
 
@@ -65,14 +67,19 @@ export class ClientListComponent {
   }
 
   editClient(client: Clients) {
+    this.isEditing = true;
     const dialogRef = this.dialog.open(ClientFormComponent, {
       data: { client: client } // Pasar los datos del cliente como parte de la configuración del diálogo
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
+      this.getAllClients();
     });
+    
   }
+
+
   deleteClient(client: Clients) {
     // Remove client from data source
     this.clients = this.clients.filter((c) => c !== client);
@@ -114,13 +121,17 @@ export class ClientListComponent {
   }
 
   addNewClient() {
+    //this.isEditing = false;
     const dialogRef = this.dialog.open(ClientFormComponent, {
       data: { client: { sharedKey: '', businessId: '', email: '', phone: '', dataAdded: '' } }
     });
   
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
+      this.getAllClients();
     });
+
+   
   }
   exportClients() {
     const dataToExport = this.clients.map((client) => ({

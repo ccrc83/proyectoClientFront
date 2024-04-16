@@ -9,14 +9,7 @@ import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 
 
-// Define la interfaz Client
-interface Client {
-  sharedKey: string;
-  businessId: string;
-  email: string;
-  phone: string;
-  dataAdded: string;
-}
+
 @Component({
   selector: 'app-client-form',
   standalone: true,
@@ -29,7 +22,7 @@ interface Client {
 export class ClientFormComponent implements OnInit {
   private _clientServices: ClientsService | undefined;
   clientForm!: FormGroup;
-  clientData: Client;
+  clientData: Clients;
   clients: Clients[] = [];
 
   dataSource = new MatTableDataSource();
@@ -55,12 +48,13 @@ export class ClientFormComponent implements OnInit {
 
  
   ngOnInit(): void {
+    this.isEditing = !!this.data.client.sharedKey;
     this.clientForm = this.formBuilder.group({
-      sharedKey: [(this.clientData as Client).sharedKey, Validators.required],
-      businessId: [(this.clientData as Client).businessId, Validators.required],
-      email: [(this.clientData as Client).email, [Validators.required, Validators.email]],
-      phone: [(this.clientData as Client).phone, Validators.required],
-      dataAdded: [(this.clientData as Client).dataAdded, Validators.required]
+      sharedKey: [(this.clientData as Clients).sharedKey, Validators.required],
+      businessId: [(this.clientData as Clients).businessId, Validators.required],
+      email: [(this.clientData as Clients).email, [Validators.required, Validators.email]],
+      phone: [(this.clientData as Clients).phone, Validators.required],
+      dataAdded: [(this.clientData as Clients).dataAdded, Validators.required]
     });
   }
 
@@ -72,16 +66,38 @@ export class ClientFormComponent implements OnInit {
     ];
   }
 
+  
+  edit(client: ClientDTO) {
+    this.subscription$ = [
+      ...this.subscription$,
+      this.clientServices.createClient(client).subscribe(res => {
+      })
+    ];
+  }
+  isEditing: boolean = false;
   onSubmit() {
-    const ClientDTO: ClientDTO = {
-      sharedKey: this.clientForm.controls['sharedKey'].value,
-      businessId: this.clientForm.controls['businessId'].value,
-      email: this.clientForm.controls['email'].value,
-      phone: this.clientForm.controls['phone'].value,
-      dataAdded:null
-    };
+    
 
-    this.save(ClientDTO);
+    if (this.isEditing){
+      const ClientDTO= {      
+        businessId: this.clientForm.controls['businessId'].value,
+        email: this.clientForm.controls['email'].value,
+        phone: this.clientForm.controls['phone'].value,
+        dataAdded:null
+      };
+      this.edit(ClientDTO);
+    }
+    else {
+        const Clients= {      
+          businessId: this.clientForm.controls['businessId'].value,
+          email: this.clientForm.controls['email'].value,
+          phone: this.clientForm.controls['phone'].value,
+          dataAdded:null
+        };
+        this.save(Clients);
+      
+    }
+    
     this.dialogRef.close(this.clientForm.value);
   }
 
@@ -92,4 +108,7 @@ export class ClientFormComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close(this.clientForm.value);
   }
+
+  
+
 }
