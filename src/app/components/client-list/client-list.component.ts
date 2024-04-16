@@ -59,7 +59,7 @@ export class ClientListComponent {
     this.subscription$ = [
       ...this.subscription$,
       this.clientServices.createClient(client).subscribe(res => {
-
+        
       })
     ];
   }
@@ -155,6 +155,7 @@ export class ClientListComponent {
       });
     }
   }
+  
 
 }
 

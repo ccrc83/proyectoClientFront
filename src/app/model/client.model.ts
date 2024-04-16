@@ -13,6 +13,7 @@ export interface ClientDTO {
   businessId: string;
   email: string;
   phone: string;
+  dataAdded: string | null;
 }
 
 export interface ClientsResponse {
