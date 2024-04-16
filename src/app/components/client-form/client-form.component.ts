@@ -23,7 +23,7 @@ interface Client {
   imports: [MaterialModule,ReactiveFormsModule],
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.css',
- 
+  providers: [ClientsService]
 })
 
 export class ClientFormComponent implements OnInit {
@@ -40,14 +40,8 @@ export class ClientFormComponent implements OnInit {
 
   subscription$: Subscription[] = [];
 
-  //clientServices=inject(ClientsService);
+  clientServices=inject(ClientsService);
 
-  get clientServices(): ClientsService {
-    if (!this._clientServices) {
-      this._clientServices = inject(ClientsService);
-    }
-    return this._clientServices;
-  }
 
   constructor(
     
