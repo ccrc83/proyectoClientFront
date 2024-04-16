@@ -79,18 +79,27 @@ export class ClientListComponent {
     
   }
 
+  delete(sharedKey: string) {
+    this.subscription$ = [
+      ...this.subscription$,
+      this.clientServices.deleteClient(sharedKey).subscribe(res => {
+      })
+    ];
+  }
 
   deleteClient(client: Clients) {
     // Remove client from data source
     this.clients = this.clients.filter((c) => c !== client);
     // Update existing data source with filtered data
     this.dataSource.data = this.clients;
+    
     // Update filtered data source
     this.filteredClients.data = this.clients;
     // Apply filter again (optional if using search)
     if (this.searchValue) {
       this.dataSource.filter = this.searchValue.trim().toLowerCase();
     }
+    this.delete(client.sharedKey);
     // Trigger change detection
     this.cdRef.detectChanges();
   }

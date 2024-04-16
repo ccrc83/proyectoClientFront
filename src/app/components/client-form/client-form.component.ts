@@ -109,6 +109,15 @@ export class ClientFormComponent implements OnInit {
     this.dialogRef.close(this.clientForm.value);
   }
 
-  
+  getAllClients() {
+    this.subscription$ = [
+      ...this.subscription$,
+      this.clientServices.getAllClients().subscribe(res => {
+
+        this.clients = res?.content;
+        this.filteredClients.data = this.clients;
+      })
+    ];
+  }
 
 }

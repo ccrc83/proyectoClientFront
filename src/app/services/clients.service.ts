@@ -26,6 +26,10 @@ export class ClientsService {
     return this.http.post<Clients>(`${this.apiUrl}/createClient`, client);
   }
 
+  editClient(client: Clients): Observable<Clients> {
+    return this.http.post<Clients>(`${this.apiUrl}/createClient`, client);
+  }
+
   deleteClient(sharedKey: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/deleteClient?sharedKey=${sharedKey}`);
   }
