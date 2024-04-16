@@ -1,0 +1,9 @@
+.client-list-container {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 3%;
+}
+
+mat-table {
+    width: 100%;
+}

@@ -1,15 +1,22 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../modules/material/material.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientFormComponent } from '../client-form/client-form.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ClientsService } from '../../services/clients.service';
+import { Subscription } from 'rxjs';
+import { ClientDTO, Clients } from '../../model/client.model';
+
+
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [MaterialModule, MatToolbarModule,ClientFormComponent],
+  imports: [MaterialModule, MatToolbarModule,ClientFormComponent,HttpClientModule],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.css'],
+  providers: [ClientsService]
 })
 export class ClientListComponent {
   displayedColumns: string[] = [
@@ -20,39 +27,53 @@ export class ClientListComponent {
     'dataAdded',
     'actions',
   ];
-  clients: Client[] = [
-    {
-      sharedKey: 'jgutierrez',
-      businessId: 'Juliana Gutierrez',
-      email: 'jgutierrez@gmail.com',
-      phone: '3219876543',
-      dataAdded: '20/05/2019',
-    },
-    {
-      sharedKey: 'mmartinez',
-      businessId: 'Manuel Martínez',
-      email: 'mmartinez@gmail.com',
-      phone: '3219876543',
-      dataAdded: '20/05/2019',
-    },
-    // Add more clients here
-  ];
+  clients: Clients[] = [];
 
-  dataSource = new MatTableDataSource(this.clients);
-  filteredClients = new MatTableDataSource(this.clients);
+  dataSource = new MatTableDataSource();
+  filteredClients = new MatTableDataSource();
   searchValue = '';
-  constructor(private cdRef: ChangeDetectorRef, public dialog: MatDialog) {}
 
-  editClient(client: Client) {
+  subscription$: Subscription[] = [];
+
+  clientServices=inject(ClientsService);
+
+
+  constructor(private cdRef: ChangeDetectorRef, public dialog: MatDialog ) {}
+
+  ngOnInit(): void {
+    this.getAllClients();
+  }
+
+  getAllClients() {
+    this.subscription$ = [
+      ...this.subscription$,
+      this.clientServices.getAllClients().subscribe(res => {
+
+        this.clients = res?.content;
+        this.filteredClients.data = this.clients;
+      })
+    ];
+  }
+
+  save(client: ClientDTO) {
+    this.subscription$ = [
+      ...this.subscription$,
+      this.clientServices.createClient(client).subscribe(res => {
+
+      })
+    ];
+  }
+
+  editClient(client: Clients) {
     const dialogRef = this.dialog.open(ClientFormComponent, {
       data: { client: client } // Pasar los datos del cliente como parte de la configuración del diálogo
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      console.log(result);
     });
   }
-  deleteClient(client: Client) {
+  deleteClient(client: Clients) {
     // Remove client from data source
     this.clients = this.clients.filter((c) => c !== client);
     // Update existing data source with filtered data
@@ -126,13 +147,15 @@ export class ClientListComponent {
     const csv = data.map((row) => Object.values(row).join(',')).join('\n');
     return `${header}\n${csv}`;
   }
+
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.forEach(sub => {
+        sub.unsubscribe();
+      });
+    }
+  }
+
 }
 
-// Define your Client interface if necessary
-interface Client {
-  sharedKey: string;
-  businessId: string;
-  email: string;
-  phone: string;
-  dataAdded: string;
-}
+

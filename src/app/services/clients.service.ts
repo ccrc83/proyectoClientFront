@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Clients, ClientDTO } from '../model/client.model';
+import { Clients, ClientDTO, ClientsResponse } from '../model/client.model';
 
 
 
@@ -13,9 +13,9 @@ export class ClientsService {
 
   constructor(private http: HttpClient) {}
 
-  getAllClients(page: number = 0, size: number = 50): Observable<Clients[]> {
+  getAllClients(page: number = 0, size: number = 50): Observable<ClientsResponse> {
     const params = { page, size };
-    return this.http.get<Clients[]>(`${this.apiUrl}/getAllClients`, { params });
+    return this.http.get<ClientsResponse>(`${this.apiUrl}/getAllClients`, { params });
   }
 
   getClientBySharedKey(sharedKey: string): Observable<Clients> {

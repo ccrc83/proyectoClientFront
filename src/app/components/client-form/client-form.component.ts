@@ -44,7 +44,7 @@ export class ClientFormComponent implements OnInit {
 
   onSubmit() {
     console.log(this.clientForm.value);
-    this.dialogRef.close();
+    this.dialogRef.close(this.clientForm.value);
   }
 
   clearForm() {

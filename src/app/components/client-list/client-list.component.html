@@ -17,6 +17,7 @@
     <input type="text" matInput placeholder="Search" (input)="filterData()" [(ngModel)]="searchValue">
   </mat-form-field>
   
+  
   <mat-table [dataSource]="filteredClients" class="mat-elevation-z8">
     <ng-container matColumnDef="sharedKey">
       <th mat-header-cell *matHeaderCellDef> Shared Key </th>
