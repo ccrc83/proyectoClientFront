@@ -7,16 +7,24 @@ import { ClientsService } from '../../services/clients.service';
 import { ClientDTO, Clients } from '../../model/client.model';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { DatePipe } from '@angular/common';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 
 @Component({
   selector: 'app-client-form',
   standalone: true,
-  imports: [MaterialModule,ReactiveFormsModule],
+  imports: [MaterialModule,ReactiveFormsModule,DatePipe,MatDatepickerModule,MatInputModule],
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.css',
-  providers: [ClientsService]
+  providers: [{provide: ClientsService},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    
+  ]
 })
 
 export class ClientFormComponent implements OnInit {
@@ -24,7 +32,7 @@ export class ClientFormComponent implements OnInit {
   clientForm!: FormGroup;
   clientData: Clients;
   clients: Clients[] = [];
-
+ 
   dataSource = new MatTableDataSource();
   filteredClients = new MatTableDataSource();
 
@@ -50,12 +58,13 @@ export class ClientFormComponent implements OnInit {
   ngOnInit(): void {
     this.isEditing = !!this.data.client.sharedKey;
     this.clientForm = this.formBuilder.group({
-      sharedKey: [(this.clientData as Clients).sharedKey, Validators.required],
+      sharedKey: [(this.clientData as Clients).sharedKey, ''],
       businessId: [(this.clientData as Clients).businessId, Validators.required],
       email: [(this.clientData as Clients).email, [Validators.required, Validators.email]],
       phone: [(this.clientData as Clients).phone, Validators.required],
       dataAdded: [(this.clientData as Clients).dataAdded, Validators.required]
     });
+    this.isEditing = !!this.data.client.sharedKey;
   }
 
   save(client: ClientDTO) {
@@ -78,21 +87,23 @@ export class ClientFormComponent implements OnInit {
   onSubmit() {
     
 
-    if (this.isEditing){
-      const ClientDTO= {      
+    if (!this.isEditing){
+      const ClientDTO= {   
+        sharedKey :this.clientForm.controls['sharedKey'].value,
         businessId: this.clientForm.controls['businessId'].value,
         email: this.clientForm.controls['email'].value,
         phone: this.clientForm.controls['phone'].value,
-        dataAdded:null
+        dataAdded:this.clientForm.controls['dataAdded'].value
       };
       this.edit(ClientDTO);
     }
     else {
         const Clients= {      
+          
           businessId: this.clientForm.controls['businessId'].value,
           email: this.clientForm.controls['email'].value,
           phone: this.clientForm.controls['phone'].value,
-          dataAdded:null
+          dataAdded:this.clientForm.controls['dataAdded'].value
         };
         this.save(Clients);
       

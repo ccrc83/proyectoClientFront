@@ -44,7 +44,7 @@ export class ClientListComponent {
   ngOnInit(): void {
    
     this.getAllClients();
-
+ 
   }
 
   getAllClients() {
@@ -68,7 +68,7 @@ export class ClientListComponent {
   }
 
   editClient(client: Clients) {
-    this.isEditing = true;
+    //this.isEditing = true;
     const dialogRef = this.dialog.open(ClientFormComponent, {
       data: { client: client } // Pasar los datos del cliente como parte de la configuración del diálogo
     });
@@ -112,10 +112,10 @@ export class ClientListComponent {
 
   filterData() {
     this.filteredClients.data = this.clients.filter(client =>
-      client.sharedKey.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+      client.sharedKey.toLowerCase().includes(this.searchValue.toLowerCase())/* ||
       client.businessId.toLowerCase().includes(this.searchValue.toLowerCase()) ||
       client.email.toLowerCase().includes(this.searchValue.toLowerCase()) ||
-      client.phone.toLowerCase().includes(this.searchValue.toLowerCase())
+      client.phone.toLowerCase().includes(this.searchValue.toLowerCase())*/
     );
     this.dataSource.data = this.filteredClients.data;
   }
@@ -130,7 +130,7 @@ export class ClientListComponent {
   }
 
   addNewClient() {
-    //this.isEditing = false;
+    this.isEditing = false;
     const dialogRef = this.dialog.open(ClientFormComponent, {
       data: { client: { sharedKey: '', businessId: '', email: '', phone: '', dataAdded: '' } }
     });
