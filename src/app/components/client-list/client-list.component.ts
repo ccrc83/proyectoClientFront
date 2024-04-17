@@ -44,6 +44,7 @@ export class ClientListComponent {
   ngOnInit(): void {
    
     this.getAllClients();
+
   }
 
   getAllClients() {
@@ -108,18 +109,17 @@ export class ClientListComponent {
     const url = 'your-api-endpoint'; // Replace with your API URL
     return null; //this.http.get<Client[]>(url); // GET request returning an array of Client objects
   }
+
   filterData() {
-    // Convertir el término de búsqueda a minúsculas para hacer coincidencias insensibles a mayúsculas y minúsculas
-    const searchTerm = this.searchValue ? this.searchValue.toLowerCase() : '';
-
-    // Filtrar los clientes basados en el término de búsqueda en la columna "Shared Key"
-    const filteredClients = this.clients.filter((client) =>
-      client.sharedKey.toLowerCase().includes(searchTerm)
+    this.filteredClients.data = this.clients.filter(client =>
+      client.sharedKey.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+      client.businessId.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+      client.email.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+      client.phone.toLowerCase().includes(this.searchValue.toLowerCase())
     );
-
-    // Actualizar la fuente de datos de la tabla con los clientes filtrados
-    this.dataSource.data = filteredClients;
+    this.dataSource.data = this.filteredClients.data;
   }
+
 
   openClientForm() {
     const dialogRef = this.dialog.open(ClientFormComponent);
