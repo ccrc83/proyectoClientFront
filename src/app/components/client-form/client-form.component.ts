@@ -87,7 +87,7 @@ export class ClientFormComponent implements OnInit {
   onSubmit() {
     
 
-    if (!this.isEditing){
+    if (this.data.isEditing){
       const ClientDTO= {   
         sharedKey :this.clientForm.controls['sharedKey'].value,
         businessId: this.clientForm.controls['businessId'].value,

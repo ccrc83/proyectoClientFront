@@ -68,9 +68,9 @@ export class ClientListComponent {
   }
 
   editClient(client: Clients) {
-    //this.isEditing = true;
+    this.isEditing = true;
     const dialogRef = this.dialog.open(ClientFormComponent, {
-      data: { client: client } // Pasar los datos del cliente como parte de la configuración del diálogo
+      data: { client: client, isEditing: this.isEditing } // Pasar los datos del cliente como parte de la configuración del diálogo
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -175,6 +175,8 @@ export class ClientListComponent {
       });
     }
   }
+
+  openAdvancedSearch(){}
   
 
 }

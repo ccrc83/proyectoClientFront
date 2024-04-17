@@ -8,6 +8,11 @@
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
+
+   <!-- Botón de Búsqueda Avanzada -->
+  <button mat-button matTooltip="Advanced Search" (click)="openAdvancedSearch()">
+    Advanced Search
+  </button>
     
   <table mat-table [dataSource]="filteredClients" class="mat-elevation-z8">
     <!-- Shared Key Column -->
