@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, ChangeDetectorRef, inject, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../modules/material/material.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,12 +8,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { ClientsService } from '../../services/clients.service';
 import { Subscription } from 'rxjs';
 import { ClientDTO, Clients } from '../../model/client.model';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [MaterialModule, MatToolbarModule,ClientFormComponent,HttpClientModule],
+  imports: [MaterialModule, MatToolbarModule,ClientFormComponent,HttpClientModule,MatPaginator],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.css'],
   providers: [ClientsService]
@@ -28,16 +29,14 @@ export class ClientListComponent {
     'actions',
   ];
   clients: Clients[] = [];
-
   dataSource = new MatTableDataSource();
-  filteredClients = new MatTableDataSource();
   searchValue = '';
-
+  filteredClients: MatTableDataSource<Clients> = new MatTableDataSource<Clients>();
   subscription$: Subscription[] = [];
 
   clientServices=inject(ClientsService);
   isEditing: boolean = false;
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private cdRef: ChangeDetectorRef, public dialog: MatDialog ) {}
 
@@ -54,6 +53,7 @@ export class ClientListComponent {
 
         this.clients = res?.content;
         this.filteredClients.data = this.clients;
+        this.filteredClients.paginator = this.paginator; 
       })
     ];
   }
@@ -177,7 +177,7 @@ export class ClientListComponent {
   }
 
   openAdvancedSearch(){}
-  
+
 
 }
 

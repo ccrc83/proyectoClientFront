@@ -1,19 +1,19 @@
 <div>
-  
   <!-- Campo de búsqueda -->
   <mat-form-field class="search-field">
     <mat-label>Search by Shared Key</mat-label>
-    <input type="text" matInput placeholder="Search" [(ngModel)]="searchValue" (input)="filterData()">
+    <input
+      type="text"
+      matInput
+      placeholder="Search"
+      [(ngModel)]="searchValue"
+      (input)="filterData()"
+    />
     <button mat-button matSuffix mat-icon-button matTooltip="Search">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
 
-   <!-- Botón de Búsqueda Avanzada -->
-  <button mat-button matTooltip="Advanced Search" (click)="openAdvancedSearch()">
-    Advanced Search
-  </button>
-    
   <table mat-table [dataSource]="filteredClients" class="mat-elevation-z8">
     <!-- Shared Key Column -->
     <ng-container matColumnDef="sharedKey">
@@ -50,10 +50,18 @@
       <th mat-header-cell *matHeaderCellDef colspan="2" class="action-header">
         Actions
         <div class="action-buttons">
-          <button mat-icon-button matTooltip="Add New Client" (click)="addNewClient()">
+          <button
+            mat-icon-button
+            matTooltip="Add New Client"
+            (click)="addNewClient()"
+          >
             <mat-icon>add</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Export Clients" (click)="exportClients()">
+          <button
+            mat-icon-button
+            matTooltip="Export Clients"
+            (click)="exportClients()"
+          >
             <mat-icon>file_download</mat-icon>
           </button>
         </div>
@@ -69,12 +77,15 @@
         </div>
       </td>
     </ng-container>
-    
-    
-    
 
     <!-- Definición de filas -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table> 
+  </table>
+
+  <!-- Paginador -->
+  <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
 </div>
