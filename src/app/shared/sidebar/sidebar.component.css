@@ -4,17 +4,12 @@
 
 .app-container {
     height: 90%;
-    margin: 0;
+    margin: 1;
 }  
 .app-sidenav {
     width: 230px;
 }
-.app-sidenav-content {
-    /* display: flex; */
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-}
+
 .content-wrapper {
     flex: 1;
     display: flex;

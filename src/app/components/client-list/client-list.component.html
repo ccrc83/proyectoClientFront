@@ -9,7 +9,7 @@
       [(ngModel)]="searchValue"
       (input)="filterData()"
     />
-    <button mat-button matSuffix mat-icon-button matTooltip="Search">
+    <button mat-button matSuffix mat-icon-button matTooltip="Search" (click)="openAdvancedSearchDialog()">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>

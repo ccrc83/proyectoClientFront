@@ -61,7 +61,7 @@ export class ClientFormComponent implements OnInit {
       sharedKey: [(this.clientData as Clients).sharedKey, ''],
       businessId: [(this.clientData as Clients).businessId, Validators.required],
       email: [(this.clientData as Clients).email, [Validators.required, Validators.email]],
-      phone: [(this.clientData as Clients).phone, Validators.required],
+      phone: [(this.clientData as Clients).phone, [Validators.required, Validators.pattern('[0-9]*')]],
       dataAdded: [(this.clientData as Clients).dataAdded, Validators.required]
     });
     this.isEditing = !!this.data.client.sharedKey;

@@ -1,0 +1,55 @@
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .search-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .mat-form-field {
+    width: calc(50% - 16px); /* Divide el ancho en dos columnas */
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .button-container {
+    margin-top: 16px;
+  }
+  
+  button[type="submit"] {
+    transition: background-color 0.3s ease; /* Animación de cambio de color al pasar el ratón */
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #1976d2; /* Color de fondo al pasar el ratón */
+  }
+  
+  .mat-icon {
+    margin-right: 8px; /* Espacio entre el icono y el texto del botón */
+  }
+  
+  .filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+
+  
+  .mat-form-field {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    margin-bottom: 16px;
+  }
+  
+  .button-container {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    display: flex;
+    justify-content: center; /* Alinea el botón a la derecha */
+  }
+  

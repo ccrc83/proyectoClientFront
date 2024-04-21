@@ -8,7 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ClientsService } from '../../services/clients.service';
 import { Subscription } from 'rxjs';
 import { ClientDTO, Clients } from '../../model/client.model';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+import { AdvancedSearchComponent } from '../advanced-search/advanced-search.component';
 
 
 @Component({
@@ -176,7 +177,17 @@ export class ClientListComponent {
     }
   }
 
-  openAdvancedSearch(){}
+  openAdvancedSearchDialog(){
+
+    const dialogRef = this.dialog.open(AdvancedSearchComponent, {
+      width: '500px', // Define el ancho del diálogo según tus necesidades
+    });
+
+    // Puedes suscribirte al evento afterClosed() para realizar acciones después de que el diálogo se cierre
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
 
 }

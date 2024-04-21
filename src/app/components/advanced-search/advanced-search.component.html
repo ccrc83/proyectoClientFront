@@ -1,0 +1,26 @@
+<div class="filter-container">
+  <form (submit)="applyFilter()" class="search-form">
+    <mat-form-field>
+      <input matInput placeholder="Search by Shared Key" [(ngModel)]="filters.sharedKey">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Search by Business ID" [(ngModel)]="filters.businessId">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Search by Email" [(ngModel)]="filters.email">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Search by Phone" [(ngModel)]="filters.phone">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="datepicker" placeholder="Search by Data Added" [(ngModel)]="filters.dataAdded">
+      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker></mat-datepicker>
+    </mat-form-field>
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit">
+        <mat-icon>search</mat-icon> Apply Filter
+      </button>     
+    </div>
+  </form>
+</div>
